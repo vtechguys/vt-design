@@ -1,0 +1,108 @@
+/* The element on which tooltip has to be shown */
+.with-tooltip {
+  position: relative;
+}
+/* pseudo element are designed to be tooltip-box and tooltip-arrow */
+/* ::before element appears as tooltip-box */
+/* ::after elemtn appers as arrow-box */
+.with-tooltip::before,
+.with-tooltip::after {
+  --scale: 0;
+  --arrow-size: 0px;
+  --translate-y: 0px;
+  --translate-x: 0px;
+  --tooltip-bg-color: green;
+  --tooltip-text-color: white;
+  position: absolute;
+}
+/*the tooltip is shown when --scale=1 */
+
+/* by default it is shown on hover */
+.with-tooltip.with-tooltip--hover:hover::before,
+.with-tooltip.with-tooltip--hover:hover::after {
+  --scale: 1;
+}
+
+/* if user want to control tooltip showing */
+.with-tooltip--active::before,
+.with-tooltip--active::after {
+  --scale: 1;
+}
+
+/* growing animation */
+.with-tooltip--animation::before,
+.with-tooltip--animation::after {
+  transform: scale(var(--scale));
+}
+
+/* tooltip having arrow pointer */
+.with-tooltip--arrow::before,
+.with-tooltip--arrow::after {
+  --arrow-size: 5px;
+}
+
+/* tooltip width never exceeds its container width */
+.with-tooltip--restrict-width {
+  max-width: 100%;
+}
+
+/*  styles on tooltip-box */
+.with-tooltip::before {
+  content: attr(data-tooltip);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  text-align: center;
+  width: max-content;
+  background: var(--tooltip-bg-color);
+  transform: translateX(var(--translate-x)) translateY(var(--translate-y))
+    scale(var(--scale));
+  transition: 150ms transform;
+}
+
+/* tooltip opening at top of container */
+.with-tooltip.with-tooltip--top::before {
+  --translate-x: -50%;
+  --translate-y: calc(-100% - var(--arrow-size));
+  top: -0.25rem;
+  left: 50%;
+  transform-origin: bottom center;
+}
+/* tooltip opens at bottom of container */
+.with-tooltip.with-tooltip--bottom::before {
+  --translate-x: -50%;
+  --translate-y: calc(100% + var(--arrow-size));
+  bottom: -0.25rem;
+  left: 50%;
+  transform-origin: top center;
+}
+/* tooltip shown at bottom of container */
+.with-tooltip.with-tooltip--left::before {
+  --translate-x: calc(-100% - var(--arrow-size));
+  --translate-y: -50%;
+  top: 50%;
+  left: -0.25rem;
+  transform-origin: right center;
+}
+/* tooltip shown at right side of container */
+.with-tooltip.with-tooltip--right::before {
+  --translate-x: calc(100% + var(--arrow-size));
+  --translate-y: -50%;
+  top: 50%;
+  right: -0.25rem;
+  transform-origin: left center;
+}
+
+/* arrow-box */
+.with-tooltip.with-tooltip--arrow::after {
+  content: "";
+  border: var(--arrow-size) solid transparent;
+  border-top-color: var(--tooltip-bg-color);
+  transform-origin: top center;
+  border: var(--arrow-size) solid transparent;
+  border-top-color: var(--tooltip-color);
+}
+
+.with-tooltip .with-tooltip--arrow.with-tooltip--arrow-top::after {
+  --translate-y: calc(var(--arrow-size));
+}
